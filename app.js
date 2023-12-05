@@ -8,6 +8,7 @@ const Campground = require('./models/campground');
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({extended: true}));
 
 const port = 3000;
 const db = mongoose.connection;
@@ -33,6 +34,12 @@ app.get('/home', async(req, res) => {
 app.get('/campgrounds', async(req, res) => {
     const campgrounds = await Campground.find();
     res.render('campgrounds/index', {campgrounds, currentPage: 'Campgrounds'});
+});
+
+app.post('/campgrounds', async(req, res) => {
+    const new_camp = new Campground(req.body.campground);
+    await new_camp.save();
+    res.redirect(`/campgrounds/${new_camp.id}`);
 });
 
 app.get('/campgrounds/new', async(req, res) => {
