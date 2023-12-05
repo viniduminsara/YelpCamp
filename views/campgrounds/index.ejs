@@ -1,3 +1,9 @@
 <% layout('layouts/boilerplate') %>
 
 <h1>All Campgrounds</h1>
+
+<ul>
+    <% for(campground of campgrounds){ %>
+        <li><%= campground.title %></li>
+    <% } %>
+</ul>

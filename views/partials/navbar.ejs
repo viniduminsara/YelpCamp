@@ -7,13 +7,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link <%= (currentPage === 'Home') ? 'active' : '' %>" href="/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Campground</a>
+            <a class="nav-link <%= (currentPage === 'Campgrounds') ? 'active' : '' %>" href="/campgrounds">Campgrounds</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link <%= (currentPage === 'New Campground') ? 'active' : '' %>" href="/campgrounds/new">New Campground</a>
           </li>
         </ul>
       </div>

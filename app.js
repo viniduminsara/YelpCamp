@@ -23,12 +23,28 @@ app.listen(port, () => {
 
 //define routes
 app.get('/', async(req, res) => {
-    res.render('home');
+    res.redirect('/campgrounds');
+});
+
+app.get('/home', async(req, res) => {
+    res.render('home', {currentPage: 'Home'});
 });
 
 app.get('/campgrounds', async(req, res) => {
-    res.render('campgrounds/index');
+    const campgrounds = await Campground.find();
+    res.render('campgrounds/index', {campgrounds, currentPage: 'Campgrounds'});
 });
+
+app.get('/campgrounds/new', async(req, res) => {
+    res.render('campgrounds/new', {currentPage: 'New Campground'});
+});
+
+app.get('/campgrounds/:id', async(req,res) => {
+    const {id} = req.params;
+    const campground = await Campground.findById(id);
+    res.render('campgrounds/show', {campground, currentPage: campground.title});
+});
+
 
 
 
