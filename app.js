@@ -7,6 +7,7 @@ const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
+const {campgroundSchema} = require('./schemas');
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -21,6 +22,18 @@ const db = mongoose.connection;
 mongoose.connect('mongodb://localhost:27017/yelp_camp');
 db.on('error', console.error.bind(console, 'Database connection error :('));
 db.once('open', () => console.log('Database connected :)'));
+
+const validateCampground = (req, res, next) => {
+
+    const {error} = campgroundSchema.validate(req.body);
+    if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+
+} 
 
 app.listen(port, () => {
     console.log('Server up at port 3000');
@@ -40,8 +53,7 @@ app.get('/campgrounds', catchAsync(async(req, res, next) => {
     res.render('campgrounds/index', {campgrounds, currentPage: 'Campgrounds'});
 }));
 
-app.post('/campgrounds', catchAsync(async(req, res, next) => {
-    if(!req.body.campground) throw new ExpressError('Invalid Campground data', 400);
+app.post('/campgrounds', validateCampground, catchAsync(async(req, res, next) => {
     const new_camp = new Campground(req.body.campground);
     await new_camp.save();
     res.redirect(`/campgrounds/${new_camp.id}`);
@@ -57,7 +69,7 @@ app.get('/campgrounds/:id', catchAsync(async(req, res, next) => {
     res.render('campgrounds/show', {campground, currentPage: campground.title});
 }));
 
-app.put('/campgrounds/:id', catchAsync(async(req, res, next) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async(req, res, next) => {
     const {id} = req.params;
     const campground = req.body.campground;
     const updated_campground = await Campground.findByIdAndUpdate(id, campground,{ runValidators: true, new:true });
