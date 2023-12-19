@@ -5,9 +5,11 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const {campgroundSchema} = require('./schemas');
+const {campgroundSchema, reviewSchema} = require('./schemas');
+const {campgroundsData} = require('./seed');
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -23,8 +25,8 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp');
 db.on('error', console.error.bind(console, 'Database connection error :('));
 db.once('open', () => console.log('Database connected :)'));
 
+//validation middlewares
 const validateCampground = (req, res, next) => {
-
     const {error} = campgroundSchema.validate(req.body);
     if(error) {
         const msg = error.details.map(el => el.message).join(',')
@@ -32,14 +34,23 @@ const validateCampground = (req, res, next) => {
     } else {
         next();
     }
-
 } 
+
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body);
+    if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
 
 app.listen(port, () => {
     console.log('Server up at port 3000');
 });
 
-//define routes
+//campground routes
 app.get('/', async(req, res) => {
     res.redirect('/campgrounds');
 });
@@ -65,7 +76,7 @@ app.get('/campgrounds/new', async(req, res) => {
 
 app.get('/campgrounds/:id', catchAsync(async(req, res, next) => {
     const {id} = req.params;
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('reviews');
     res.render('campgrounds/show', {campground, currentPage: campground.title});
 }));
 
@@ -87,6 +98,19 @@ app.get('/campgrounds/:id/edit', catchAsync(async(req, res, next) => {
     const campground = await Campground.findById(id);  
     res.render('campgrounds/edit', {campground, currentPage: `Edit ${campground.title}`});
 }));
+
+//review routes
+
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res, next) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground.id}`);
+}));
+
+//error handling
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
