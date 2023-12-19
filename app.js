@@ -55,7 +55,7 @@ app.get('/campgrounds', catchAsync(async(req, res, next) => {
 
 app.post('/campgrounds', validateCampground, catchAsync(async(req, res, next) => {
     const new_camp = new Campground(req.body.campground);
-    await new_camp.save();
+    await new_camp.save(); 
     res.redirect(`/campgrounds/${new_camp.id}`);
 }));
 
