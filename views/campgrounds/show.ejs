@@ -19,6 +19,8 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div class="col-6">
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3 needs-validation" method="post" novalidate>
             <div class="mb-3">
@@ -33,11 +35,17 @@
             </div>
             <button class="btn btn-success">Submit</button>
         </form>
-    </div>
-    <div class="col-6">
         <h5>Reviews</h5>
         <% for(let review of campground.reviews) { %>
-            <p>Review : <%= review.body %> <span class="text-muted">Rating : <%= review.rating %></span></p>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6>Rating :<%= review.rating %></h6>
+                    <p class="text-muted">Review : <%= review.body %></p>
+                    <form action="/campgrounds/<%= campground.id %>/reviews/<%= review.id %>?_method=DELETE" method="post">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
         <% } %>
     </div>
 </div>
