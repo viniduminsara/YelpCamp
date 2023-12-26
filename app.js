@@ -7,8 +7,12 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+const User = require('./models/user');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 //configurations
 app.engine('ejs', ejsMate);
@@ -29,8 +33,14 @@ const sessionConfig = {
         maxAge: ( 1000 * 60 * 60 * 24 * 7 )
     }
 }
-
 app.use(session(sessionConfig));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 const port = 3000;
 const db = mongoose.connection;
@@ -51,6 +61,7 @@ app.use((req, res, next) => {
 });
 
 //routers
+app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
 
@@ -60,7 +71,7 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    const { status = 500, message = 'Somethig went wrong'} = err;
+    const { status = 500, message = 'Something went wrong'} = err;
     res.status(status).render('error', {err, currentPage: `${status} Error`});
 });
 
