@@ -1,22 +1,9 @@
 const express = require('express');
-const {campgroundSchema} = require('../schemas');
 const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const {isLoggedIn} = require('../middleware');
-
+const {isLoggedIn, validateCampground, isAuthor} = require('../middleware');
 
 const router = express.Router();
-
-const validateCampground = (req, res, next) => {
-    const {error} = campgroundSchema.validate(req.body);
-    if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-} 
 
 router.get('/', catchAsync(async(req, res, next) => {
     const campgrounds = await Campground.find();
@@ -44,28 +31,27 @@ router.get('/:id', catchAsync(async(req, res, next) => {
     res.render('campgrounds/show', {campground, currentPage: campground.title});
 }));
 
-router.put('/:id', isLoggedIn, validateCampground, catchAsync(async(req, res, next) => {
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(async(req, res, next) => {
     const {id} = req.params;
-    const campground = req.body.campground;
-    const updated_campground = await Campground.findByIdAndUpdate(id, campground,{ runValidators: true, new:true });
+    const updated_campground = await Campground.findByIdAndUpdate(id, req.body.campground,{ runValidators: true, new:true });
     req.flash('success', 'Successfully Updated the Campground!');
     res.redirect(`/campgrounds/${updated_campground.id}`);
 }));
 
-router.delete('/:id', isLoggedIn, catchAsync(async(req, res, next) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async(req, res, next) => {
     const {id} = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully Deleted the Campground!');
     res.redirect('/campgrounds');
 }));
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res, next) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async(req, res, next) => {
     const {id} = req.params;
     const campground = await Campground.findById(id);
     if(!campground){
         req.flash('error', 'Cannot Find The Campground');
         return res.redirect('/campgrounds');
-    } 
+    }
     res.render('campgrounds/edit', {campground, currentPage: `Edit ${campground.title}`});
 }));
 

@@ -40,7 +40,7 @@ router.post('/login',
 
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', storeReturnTo, (req, res) => {
     req.logOut(function (err) {
         if (err) {
             return next(err);
