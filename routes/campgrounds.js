@@ -5,17 +5,16 @@ const campgrounds = require('../controllers/campgrounds');
 
 const router = express.Router();
 
-router.get('/', catchAsync(campgrounds.index));
-
-router.post('/', isLoggedIn, validateCampground, catchAsync(campgrounds.create));
+router.route('/')
+    .get(catchAsync(campgrounds.index))
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.create));
 
 router.get('/new', isLoggedIn, campgrounds.newForm);
 
-router.get('/:id', catchAsync(campgrounds.show));
-
-router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.update));
-
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(campgrounds.delete));
+router.route('/:id')
+    .get(catchAsync(campgrounds.show))
+    .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.update))
+    .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.delete));
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.editForm));
 
