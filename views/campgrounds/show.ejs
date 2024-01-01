@@ -1,17 +1,19 @@
 <% layout('layouts/boilerplate') %>
 
+<link rel="stylesheet" href="/stylesheets/starability-growRotate.css">
+
 <div class="row mt-3">
     <div class="col-6">
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="<%= campground.tile %>" height="400px">
             <div class="card-body">
-              <h5 class="card-title"><%= campground.title %></h5>
-              <p class="card-text"><%= campground.description %>.</p>
+                <h5 class="card-title"><%= campground.title %></h5>
+                <p class="card-text"><%= campground.description %>.</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">$ <%= campground.price %>/day</li>
-              <li class="list-group-item text-muted">Location : <%= campground.location %></li>
-              <li class="list-group-item text-muted">Submitted by <%= campground.author.username %></li>
+                <li class="list-group-item text-muted">Location : <%= campground.location %></li>
+                <li class="list-group-item text-muted">Submitted by <%= campground.author.username %></li>
             </ul>
             <% if(currentUser && campground.author.equals(currentUser.id)) { %>
                 <div class="card-body">
@@ -27,9 +29,21 @@
         <% if(currentUser) {%>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3 needs-validation" method="post" novalidate>
-            <div class="mb-3">
-                <label for="rating" class="form-label">Rating</label>
-                <input type="range" name="review[rating]" id="rating" min="0" max="5" class="form-range" required>
+            <div>
+                <label class="form-label" for="body">Rating</label>
+                <fieldset class="starability-growRotate">
+                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="body">Review</label>
@@ -44,12 +58,14 @@
         <% for(let review of campground.reviews) { %>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h6 class="card-title mb-3"><%= review.author.username %></h6>
-                    <h6 class="card-subtitle text-muted">Rating :<%= review.rating %></h6>
+                    <h6 class="card-title"><%= review.author.username %></h6>
+                    <p class="starability-result" data-rating="<%= review.rating %>">
+                      Rated: <%= review.rating %> stars
+                    </p>
                     <p class="text-muted"><%= review.body %></p>
                     <% if(currentUser && review.author.equals(currentUser.id)) { %>
                         <form action="/campgrounds/<%= campground.id %>/reviews/<%= review.id %>?_method=DELETE" method="post">
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button class="btn btn-sm btn-danger" style="position: absolute; right: 2%; top: 10%;">Delete</button>
                         </form>
                     <% } %>
                 </div>
