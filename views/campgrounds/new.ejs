@@ -17,15 +17,12 @@
         <div class="input-group mb-2">
             <label for="price" class="form-label">Campground Price</label>
             <div class="input-group">
-                <span class="input-group-text" id="sign">$</span>
+                <span class="input-group-text" id="sign">LKR</span>
                 <input type="text" class="form-control" id="price" placeholder="0.0" name="campground[price]" aria-label="price" aria-describedby="sign" required>
                 <div class="invalid-feedback">Please enter the price per day.</div>
             </div>
         </div>
         <div class="mb-2">
-            <!-- <label for="image" class="form-label">Image URL</label>
-            <input type="text" class="form-control" id="image" placeholder="Enter Image url of the campground" name="campground[image]" required> 
-            <div class="invalid-feedback">Please enter the image url.</div>    -->
             <label for="image" class="form-label">Image URL</label>
             <input type="file" class="form-control" name="image" id="image" multiple required>
         </div>

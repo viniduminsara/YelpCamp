@@ -23,11 +23,6 @@
             </div>
         </div>
         <div class="mb-2">
-            <label for="image" class="form-label">Image URL</label>
-            <input type="text" class="form-control" id="image" placeholder="Enter Image url of the campground" name="campground[image]" value="<%= campground.image %>" required> 
-            <div class="invalid-feedback">Please enter the image url.</div>    
-        </div>
-        <div class="mb-2">
             <label for="desc" class="form-label">Description</label>
             <textarea type="text" class="form-control" id="desc" placeholder="Enter Description of the campground" name="campground[description]" required><%= campground.description %></textarea>
             <div class="invalid-feedback">Please enter the description.</div>

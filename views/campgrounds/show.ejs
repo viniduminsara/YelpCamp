@@ -5,13 +5,38 @@
 <div class="row mt-3">
     <div class="col-6">
         <div class="card mb-3">
-            <img src="<%= campground.image %>" class="card-img-top" alt="<%= campground.tile %>" height="400px">
+            <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-indicators">
+                  <% campground.images.forEach((img, i) => {%>
+                    <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>" aria-current="true" aria-label="Slide <%= i %>"></button>
+                  <% }) %>
+                </div>
+                <div class="carousel-inner">
+                  <% campground.images.forEach((img, i) => { %>
+                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                      <img src="<%= img.url %>" class="d-block w-100" style="max-height: 500px; min-height: 500px;" alt="<%= campground.title %>">
+                    </div>
+                  <% }) %>
+                </div>
+                <% if(campground.images.length > 1) { %>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+                <% } %>
+            </div>
+              
+            
             <div class="card-body">
                 <h5 class="card-title"><%= campground.title %></h5>
                 <p class="card-text"><%= campground.description %>.</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">$ <%= campground.price %>/day</li>
+                <li class="list-group-item fw-semibold">LKR <%= campground.price %><small class="text-muted">/day</small></li>
                 <li class="list-group-item text-muted">Location : <%= campground.location %></li>
                 <li class="list-group-item text-muted">Submitted by <%= campground.author.username %></li>
             </ul>

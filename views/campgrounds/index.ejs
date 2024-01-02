@@ -6,12 +6,12 @@
     <div class="card mb-3">
         <div class="row">
             <div class="col-md-4">
-                <img src="<%= campground.image %>" class="img-fluid" alt="<%= campground.title %>">
+                <img src="<%= campground.images[0].url %>" class="img-fluid" alt="<%= campground.title %>">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
                     <h3 class="card-title"><%= campground.title %></h3>
-                    <h3 class="card-text">$ <%= campground.price %><span class="text-muted fs-6">/day</span></h3>
+                    <h4 class="card-text text-muted">LKR <%= campground.price %><span class="fs-6">/day</span></h4>
                     <p class="card-text"><%= campground.description %></p>
                     <a class="btn btn-primary" href="/campgrounds/<%= campground.id %>">View Details</a>
                 </div>
