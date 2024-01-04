@@ -2,8 +2,8 @@ mapboxgl.accessToken = mapbox_token;
 const map = new mapboxgl.Map({
     container: 'map',
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-    style: 'mapbox://styles/mapbox/dark-v11',
-    center: [80.6350358, 7.2931208],
+    style: 'mapbox://styles/mapbox/outdoors-v12',
+    center: [80.6, 6.9],
     zoom: 7
 });
 
@@ -36,19 +36,19 @@ map.on('load', () => {
                 'step',
                 ['get', 'point_count'],
                 '#51bbd6',
-                2,
+                3,
                 '#f1f075',
-                5,
+                10,
                 '#f28cb1'
             ],
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
+                15,
+                3,
                 20,
-                100,
-                30,
-                750,
-                40
+                10,
+                30
             ]
         }
     });
@@ -71,9 +71,9 @@ map.on('load', () => {
         source: 'campgrounds',
         filter: ['!', ['has', 'point_count']],
         paint: {
-            'circle-color': '#11b4da',
+            'circle-color': '#a4161a',
             'circle-radius': 6,
-            'circle-stroke-width': 1,
+            'circle-stroke-width': 2,
             'circle-stroke-color': '#fff'
         }
     });
@@ -103,9 +103,7 @@ map.on('load', () => {
     // description HTML from its properties.
     map.on('click', 'unclustered-point', (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami =
-            e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+        const {popupMarkup} = e.features[0].properties;
 
         // Ensure that if the map is zoomed out such that
         // multiple copies of the feature are visible, the
@@ -116,10 +114,30 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(
-                `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
-            )
-            .addTo(map);
+            .setHTML(popupMarkup)
+            .addTo(map)
+    });
+
+    const popup = new mapboxgl.Popup( {closeButton: false, closeOnClick: false} );
+
+    map.on('mouseenter', 'unclustered-point', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const {popupMarkup} = e.features[0].properties;
+
+        // Ensure that if the map is zoomed out such that
+        // multiple copies of the feature are visible, the
+        // popup appears over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        popup.setLngLat(coordinates).setHTML(popupMarkup).addTo(map);
+    });
+
+    map.on('mouseleave', 'unclustered-point', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
     });
 
     map.on('mouseenter', 'clusters', () => {
