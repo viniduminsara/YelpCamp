@@ -13,7 +13,7 @@ const CampgroundSchema = new Schema({
     description: String,
     location: String,
     images: [ImageSchema],
-    geometory: {
+    geometry: {
         type: {
             type: String,
             enum: ['Point'],
