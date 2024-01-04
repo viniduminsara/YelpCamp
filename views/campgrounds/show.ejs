@@ -5,32 +5,34 @@
 <div class="row mt-3">
     <div class="col-6">
         <div class="card mb-3">
-            <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                <div class="carousel-indicators">
-                  <% campground.images.forEach((img, i) => {%>
-                    <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>" aria-current="true" aria-label="Slide <%= i %>"></button>
-                  <% }) %>
-                </div>
-                <div class="carousel-inner">
-                  <% campground.images.forEach((img, i) => { %>
-                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                      <img src="<%= img.url %>" class="d-block w-100" style="max-height: 500px; min-height: 500px;" alt="<%= campground.title %>">
+            <% if(campground.images.length > 0) { %>
+                <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-indicators">
+                    <% campground.images.forEach((img, i) => {%>
+                        <button type="button" data-bs-target="#campgroundCarousel" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>" aria-current="true" aria-label="Slide <%= i %>"></button>
+                    <% }) %>
                     </div>
-                  <% }) %>
+                    <div class="carousel-inner">
+                    <% campground.images.forEach((img, i) => { %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                        <img src="<%= img.url %>" class="d-block w-100" style="max-height: 500px; min-height: 500px;" alt="<%= campground.title %>">
+                        </div>
+                    <% }) %>
+                    </div>
+                    <% if(campground.images.length > 1) { %>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                        </button>
+                    <% } %>
                 </div>
-                <% if(campground.images.length > 1) { %>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                    </button>
-                <% } %>
-            </div>
-              
-            
+            <% }else{ %>
+              <img src="https://placehold.co/800?text=<%= campground.title %>&font=roboto" alt="image">
+            <% } %>
             <div class="card-body">
                 <h5 class="card-title"><%= campground.title %></h5>
                 <p class="card-text"><%= campground.description %>.</p>
@@ -51,6 +53,7 @@
         </div>
     </div>
     <div class="col-6">
+        <div id="map" class="w-100 h-50 mb-3"></div>
         <% if(currentUser) {%>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3 needs-validation" method="post" novalidate>
@@ -98,3 +101,9 @@
         <% } %>
     </div>
 </div>
+
+<script> 
+    const mapbox_token = '<%- process.env.MAPBOX_TOKEN %>'; 
+    const campground = <%- JSON.stringify(campground) %>;
+</script>
+<script src="/scripts/showPageMap.js"></script>
