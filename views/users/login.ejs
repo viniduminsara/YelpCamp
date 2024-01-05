@@ -1,24 +1,29 @@
 <% layout('layouts/boilerplate') %>
 
-<h1 class="text-center mt-3">Login</h1>
+<link rel="stylesheet" href="/stylesheets/login.css">
 
-<div class="row d-flex justify-content-center mt-5">
-    <div class="col-4">
-        <div class="card p-3">
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+        <div class="card p-3">          
+            <h1 class="text-center my-4">Login</h1>
             <form action="/login" method="post" class="needs-validation" novalidate>
                 <div class="mb-2">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="username" name="username" required>
+                    <input type="text" class="form-control shadow-none" id="username" placeholder="peterparker" name="username" required>
                     <div class="invalid-feedback">Please enter the username.</div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="password" name="password" required>
+                    <input type="password" class="form-control shadow-none" id="password" placeholder="********" name="password" required>
                     <div class="invalid-feedback">Please enter the password.</div>
                 </div>
-                <button class="btn btn-success w-100">Login</button>
+                <button class="w-100">Login</button>
             </form>
+            <a href="/signup" class="signup-link mt-3">Not having an account?</a>
         </div>
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-12 col-12 d-flex justify-content-center align-items-center">
+        <img src="https://res.cloudinary.com/di22m4v3n/image/upload/v1704437672/YelpCamp/logo_eb1coe.png" alt="logo" style="width: 400px;">
     </div>
 </div>
 

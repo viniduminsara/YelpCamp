@@ -1,0 +1,65 @@
+body{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://images.unsplash.com/photo-1571687949921-1306bfb24b72?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-dark{
+    background-color: transparent !important;
+}
+
+.row{
+    height: 80vh;
+}
+
+.card{
+    background-color: transparent;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(9px);
+    border: 2px solid #B2B4B1;
+}
+
+.card h1, label{
+    color: #B2B4B1;
+}
+
+input{
+    background-color: transparent !important;
+    color: #B2B4B1 !important;
+    border: none !important;
+}
+
+input::placeholder{
+    color: #b2b4b161 !important;
+}
+
+input:focus{
+    outline: none !important;
+}
+
+.signup-link{
+    text-decoration: none;
+    color: #B2B4B1;
+    text-align: right;
+    opacity: 0.5;
+    transition: all 0.4s ease;
+}
+
+.signup-link:hover{
+    opacity: 1;
+}
+
+button{
+    background-color: #B2B4B1;
+    color: #090E0F;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover{
+    opacity: 0.7;
+}
+
