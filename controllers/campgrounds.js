@@ -56,18 +56,10 @@ module.exports.editForm = async(req, res, next) => {
 
 module.exports.update = async(req, res, next) => {
     const {id} = req.params;
-    console.log(req.body);
     const updated_campground = await Campground.findByIdAndUpdate(id, req.body.campground,{ runValidators: true, new:true });
     const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }));
     updated_campground.images.push(...imgs);
     await updated_campground.save();
-    
-    if(req.body.deleteImages){
-        for(let filename of req.body.deleteImages){
-            await cloudinary.uploader.destroy(filename);
-        }
-        await updated_campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
-    }
     req.flash('success', 'Successfully Updated the Campground!');
     res.redirect(`/campgrounds/${updated_campground.id}`);
 }
@@ -77,4 +69,19 @@ module.exports.delete = async(req, res, next) => {
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully Deleted the Campground!');
     res.redirect('/campgrounds');
+}
+
+module.exports.deleteImg = async(req, res, next) => {
+    const {id} = req.params;
+    const campground = await Campground.findById(id);
+    if(campground){
+        if(req.body.deleteImages){
+            for(let filename of req.body.deleteImages){
+                await cloudinary.uploader.destroy(filename);
+            }
+            await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
+        }
+    }
+    req.flash('success', 'Successfully Deleted the images!');
+    res.redirect(`/campgrounds/${campground.id}`);
 }

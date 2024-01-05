@@ -1,0 +1,25 @@
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.image-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.delete-checkbox {
+    position: absolute;
+    top: 0;
+    right: 3%;
+    margin: 5px;
+    z-index: 1;
+}
+
+.img-thumbnail {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
