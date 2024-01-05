@@ -16,15 +16,16 @@
             <a class="nav-link <%= (currentPage === 'New Campground') ? 'active' : '' %>" href="/campgrounds/new">New Campground</a>
           </li>
         </ul>
+        <div class="navbar-nav ms-auto">
+          <% if(!currentUser){ %>
+            <a href="/login" class="btn btn-dark me-2">Login</a>
+            <a href="/signup" class="btn btn-dark me-2">Signup</a>
+          <% }else{ %>
+            <span class="navbar-text me-3"><%= currentUser.username %></span>
+            <a href="/logout" class="btn btn-outline-danger me-2 border-0">Logout</a>
+          <% } %>
+        </div>
       </div>
-      <div class="navbar-nav">
-        <% if(!currentUser){ %>
-          <a href="/login" class="btn btn-dark me-2">Login</a>
-          <a href="/signup" class="btn btn-dark me-2">Signup</a>
-        <% }else{ %>
-          <span class="navbar-text me-3"><%= currentUser.username %></span>
-          <a href="/logout" class="btn btn-outline-danger me-2 border-0">Logout</a>
-        <% } %>
-      </div>
+      
     </div>
   </nav>
