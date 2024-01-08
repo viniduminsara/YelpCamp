@@ -18,6 +18,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const urls = require('./public/scripts/CSPUrls');
 
 //configurations
 app.engine('ejs', ejsMate);
@@ -28,6 +30,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(mongoSanitize());
+app.use(helmet());
 
 const sessionConfig = {
     name: 'YelpCampSession',
@@ -49,6 +52,28 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//handle the content security policy
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...urls.connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...urls.scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...urls.styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/di22m4v3n/",
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...urls.fontSrcUrls],
+        },
+    })
+);
 
 const port = 3000;
 const db = mongoose.connection;
