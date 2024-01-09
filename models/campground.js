@@ -41,6 +41,10 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/c_thumb,g_auto,h_150,w_200');
 });
 
+ImageSchema.virtual('preview').get(function() {
+    return this.url.replace('/upload', '/upload/c_thumb,g_auto,h_300,w_500');
+});
+
 CampgroundSchema.virtual('properties.popupMarkup').get(function() {
     return `<h6><a href="/campgrounds/${this.id}">${this.title}</a></h6><p>${this.location}</p>`
 });
