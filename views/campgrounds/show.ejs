@@ -54,35 +54,31 @@
     </div>
     <div class="col-6">
         <div id="map" class="mb-3" style="width: 100%; height: 30vh;"></div>
-        <% if(currentUser) {%>
-        <h2>Leave a Review</h2>
-        <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3 needs-validation" method="post" novalidate>
-            <div>
-                <label class="form-label" for="body">Rating</label>
-                <fieldset class="starability-growRotate">
-                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
-                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                    <label for="first-rate1" title="Terrible">1 star</label>
-                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                    <label for="first-rate2" title="Not good">2 stars</label>
-                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                    <label for="first-rate3" title="Average">3 stars</label>
-                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                    <label for="first-rate4" title="Very good">4 stars</label>
-                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                    <label for="first-rate5" title="Amazing">5 stars</label>
-                </fieldset>
+
+        <h5>Ratings</h5>
+        <div class="row rating-container mb-3">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                <p class="d-inline"><span class="rating"><%= ratingStats.average %></span> average</p>
             </div>
-            <div class="mb-3">
-                <label class="form-label" for="body">Review</label>
-                <textarea name="review[body]" id="body" class="form-control" cols="30" rows="4" required></textarea>
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Please enter the review</div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                <p class="d-inline"><span class="rating"><%= ratingStats.reviewsCount %></span> reviews</p>
             </div>
-            <button class="btn btn-success">Submit</button>
-        </form>
-        <% } %>
-        <h5>Reviews</h5>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                <p class="d-inline"><span class="rating"><%= ratingStats.total %></span> stars</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <h5>Reviews</h5>
+            </div>
+            <% if(currentUser) {%>
+            <div class="col-6 d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-star mx-2"></i>Rate this Campground
+                </button>
+            </div>
+            <% } %>
+        </div>
         <% for(let review of campground.reviews) { %>
             <div class="card mb-3">
                 <div class="card-body">
@@ -99,6 +95,45 @@
                 </div>
             </div>
         <% } %>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Leave a Review</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/campgrounds/<%= campground.id %>/reviews" class="mb-3 needs-validation" method="post" novalidate>
+                    <div>
+                        <label class="form-label" for="body">Rating</label>
+                        <fieldset class="starability-growRotate">
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Review</label>
+                        <textarea name="review[body]" id="body" class="form-control" cols="30" rows="4" required></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Please enter the review</div>
+                    </div>
+                    <button class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

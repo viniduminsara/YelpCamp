@@ -40,8 +40,16 @@ module.exports.show = async(req, res, next) => {
         req.flash('error', 'Cannot Find The Campground');
         return res.redirect('/campgrounds');
     }
+    const total = campground.reviews.reduce((sum, review) => sum + review.rating, 0);
+    const reviewsCount = campground.reviews.length;
+    const average = reviewsCount ? (total / reviewsCount).toFixed(1) : 0.0;
 
-    res.render('campgrounds/show', {campground, currentPage: campground.title});
+    const ratingStats = {
+        total: total,
+        reviewsCount:reviewsCount,
+        average: average
+    }
+    res.render('campgrounds/show', {campground, ratingStats, currentPage: campground.title});
 }
 
 module.exports.editForm = async(req, res, next) => {

@@ -37,6 +37,24 @@
     overflow: hidden;
 }
 
+.rating{
+    font-size: 60px;
+}
 
+.rating-container{
+    background-color: #b0c4b1;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.rating-container div{
+    display: flex;
+    justify-content: center;
+    border-right: 2px #4a5759 solid;
+}
+
+.rating-container div:last-child{
+    border: none;
+}
 
 /* Add additional styling as needed */
