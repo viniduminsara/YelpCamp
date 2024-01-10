@@ -42,7 +42,7 @@
 }
 
 .rating-container{
-    background-color: #b0c4b1;
+    background-color: #2B3035;
     border-radius: 10px;
     padding: 20px;
 }
@@ -51,6 +51,7 @@
     display: flex;
     justify-content: center;
     border-right: 2px #4a5759 solid;
+    color: #B2B4B1;
 }
 
 .rating-container div:last-child{
