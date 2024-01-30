@@ -3,10 +3,26 @@ const { cloudinary } = require('../cloudinary');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapboxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapboxToken });
+const ITEMS_PER_PAGE = 9;
 
 module.exports.index = async(req, res, next) => {
-    const campgrounds = await Campground.find();
-    res.render('campgrounds/index', {campgrounds, currentPage: 'Campgrounds'});
+    const page = parseInt(req.query.page) || 1;
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+
+    // Fetch campgrounds for the current page
+    const campgrounds = await Campground.find()
+        .skip(skip)
+        .limit(ITEMS_PER_PAGE);
+
+    const totalCampgrounds = await Campground.countDocuments();
+    const totalPages = Math.ceil(totalCampgrounds / ITEMS_PER_PAGE);
+
+    res.render('campgrounds/index', {
+        campgrounds,
+        currentPage: 'Campgrounds',
+        totalPages,
+        currentPageNumber: page
+    });
 }
 
 module.exports.newForm = async(req, res) => {

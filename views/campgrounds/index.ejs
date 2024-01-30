@@ -34,6 +34,29 @@
         </div>
     <% } %>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <% if (currentPageNumber > 1){ %>
+        <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPageNumber - 1 %>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <% } %>
+
+        <% for (let i = 1; i <= totalPages; i++){ %>
+        <li class="page-item"><a class="page-link <%= i === currentPageNumber ? 'active' : '' %>" href="?page=<%= i %>"><%= i %></a></li>
+        <% } %>
+
+        <% if (currentPageNumber < totalPages) { %>
+        <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPageNumber + 1 %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <% } %>
+    </ul>
+</nav>
 
 
 <script src="/scripts/campgroundSearch.js"></script>

@@ -77,6 +77,10 @@
                     <i class="fa-solid fa-star mx-2"></i>Rate this Campground
                 </button>
             </div>
+            <% }else{ %>
+            <div class="col-6 d-flex justify-content-end">
+                <p>Please <a href="/login">login</a> to add review</p>
+            </div>
             <% } %>
         </div>
         <% for(let review of campground.reviews) { %>
