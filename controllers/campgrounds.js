@@ -56,16 +56,21 @@ module.exports.show = async(req, res, next) => {
         req.flash('error', 'Cannot Find The Campground');
         return res.redirect('/campgrounds');
     }
+
+    const displayedReviews = campground.reviews.slice(0, 3);
+
     const total = campground.reviews.reduce((sum, review) => sum + review.rating, 0);
     const reviewsCount = campground.reviews.length;
     const average = reviewsCount ? (total / reviewsCount).toFixed(1) : 0.0;
 
-    const ratingStats = {
-        total: total,
-        reviewsCount:reviewsCount,
-        average: average
-    }
-    res.render('campgrounds/show', {campground, ratingStats, currentPage: campground.title});
+    const ratingStats = { total: total, reviewsCount:reviewsCount, average: average }
+
+    res.render('campgrounds/show', {
+        campground,
+        ratingStats,
+        displayedReviews,
+        currentPage: campground.title
+    });
 }
 
 module.exports.editForm = async(req, res, next) => {
@@ -108,4 +113,23 @@ module.exports.deleteImg = async(req, res, next) => {
     }
     req.flash('success', 'Successfully Deleted the images!');
     res.redirect(`/campgrounds/${campground.id}`);
+}
+
+module.exports.loadReview = async(req, res, next) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author');
+
+    const reviewsPerPage = 3;
+    let page = parseInt(req.params.page) || 1;
+
+    const startIdx = (page - 1) * reviewsPerPage;
+    const endIdx = startIdx + reviewsPerPage;
+
+    const nextReviews = campground.reviews.slice(startIdx, endIdx);
+    res.json({ nextReviews });
 }

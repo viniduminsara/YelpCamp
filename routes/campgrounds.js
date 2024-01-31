@@ -21,5 +21,6 @@ router.route('/:id')
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.editForm));
 router.delete('/:id/image', isLoggedIn, isAuthor, catchAsync(campgrounds.deleteImg));
+router.get('/:id/reviews/:page', catchAsync(campgrounds.loadReview));
 
 module.exports = router;

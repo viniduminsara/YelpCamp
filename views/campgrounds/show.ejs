@@ -83,22 +83,29 @@
             </div>
             <% } %>
         </div>
-        <% for(let review of campground.reviews) { %>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h6 class="card-title"><%= review.author.username %></h6>
-                    <p class="starability-result" data-rating="<%= review.rating %>">
-                      Rated: <%= review.rating %> stars
-                    </p>
-                    <p class="text-muted"><%= review.body %></p>
-                    <% if(currentUser && review.author.equals(currentUser.id)) { %>
-                        <form action="/campgrounds/<%= campground.id %>/reviews/<%= review.id %>?_method=DELETE" method="post">
-                            <button class="btn btn-sm btn-danger" style="position: absolute; right: 2%; top: 10%;">Delete</button>
-                        </form>
-                    <% } %>
+        <div id="reviewsContainer" >
+            <% for(let review of displayedReviews) { %>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title"><%= review.author.username %></h6>
+                        <p class="starability-result" data-rating="<%= review.rating %>">
+                          Rated: <%= review.rating %> stars
+                        </p>
+                        <p class="text-muted"><%= review.body %></p>
+                        <% if(currentUser && review.author.equals(currentUser.id)) { %>
+                            <form action="/campgrounds/<%= campground.id %>/reviews/<%= review.id %>?_method=DELETE" method="post">
+                                <button class="btn btn-sm btn-danger" style="position: absolute; right: 2%; top: 10%;">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
                 </div>
-            </div>
-        <% } %>
+            <% } %>
+        </div>
+        <div class="text-center">
+            <% if (displayedReviews.length < campground.reviews.length) { %>
+                <button id="loadMoreBtn" class="btn btn-primary mt-3">Load More</button>
+            <% } %>
+        </div>
     </div>
 </div>
 
@@ -144,5 +151,8 @@
 <script> 
     const mapbox_token = '<%- process.env.MAPBOX_TOKEN %>'; 
     const campground = <%- JSON.stringify(campground) %>;
+    const campgroundId = '<%- campground.id %>';
+    const currentUserId = '<%- currentUser ? currentUser.id : '' %>';
 </script>
 <script src="/scripts/showPageMap.js"></script>
+<script src="/scripts/reviewLoad.js"></script>
