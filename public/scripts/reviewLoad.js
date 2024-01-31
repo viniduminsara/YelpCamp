@@ -6,9 +6,7 @@ $(document).ready(function () {
 
         axios.get(`${campgroundId}/reviews/${page}`)
             .then(function (reviews) {
-                console.log(reviews)
                 for (let newReview of reviews.data.nextReviews) {
-                    console.log(newReview.author + ' : ' + currentUserId)
                     $('#reviewsContainer').append(
                         `<div class="card mb-3">
                             <div class="card-body">

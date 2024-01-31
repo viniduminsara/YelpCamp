@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get the input element and campground cards
     const searchInput = document.getElementById('searchInput');
     const campgroundCards = document.querySelectorAll('.card');
-    console.log(searchInput)
-    console.log(campgroundCards)
 
     // Add an input event listener to the search input
     searchInput.addEventListener('input', function () {
