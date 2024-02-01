@@ -6,6 +6,12 @@ const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 const ITEMS_PER_PAGE = 9;
 
 module.exports.index = async(req, res, next) => {
+
+    if (req.query.page === 'all'){
+        const campgrounds = await Campground.find();
+        return res.json(campgrounds);
+    }
+
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * ITEMS_PER_PAGE;
 
@@ -56,7 +62,7 @@ module.exports.show = async(req, res, next) => {
         return res.redirect('/campgrounds');
     }
 
-    const displayedReviews = campground.reviews.slice(0, 3);
+    const displayedReviews = campground.reviews.slice(0, 2);
 
     const total = campground.reviews.reduce((sum, review) => sum + review.rating, 0);
     const reviewsCount = campground.reviews.length;
@@ -123,7 +129,7 @@ module.exports.loadReview = async(req, res, next) => {
         }
     }).populate('author');
 
-    const reviewsPerPage = 3;
+    const reviewsPerPage = 2;
     let page = parseInt(req.params.page) || 1;
 
     const startIdx = (page - 1) * reviewsPerPage;

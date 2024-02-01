@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     $('#loadMoreBtn').on('click', function () {
         page++;
+        const loadMoreBtn = $(this);
 
         axios.get(`${campgroundId}/reviews/${page}`)
             .then(function (reviews) {
@@ -23,6 +24,10 @@ $(document).ready(function () {
                         + `</div>
                         </div>`
                     );
+                }
+                if ($('#reviewsContainer .card').length >= campgroundCount) {
+                    // If not, hide the button
+                    loadMoreBtn.hide();
                 }
             })
             .catch(function (err) {

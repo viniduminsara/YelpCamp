@@ -79,7 +79,7 @@
             </div>
             <% }else{ %>
             <div class="col-6 d-flex justify-content-end">
-                <p>Please <a href="/login">login</a> to add review</p>
+                <p>Please <a href="/login">login</a> to add your review</p>
             </div>
             <% } %>
         </div>
@@ -103,7 +103,7 @@
         </div>
         <div class="text-center">
             <% if (displayedReviews.length < campground.reviews.length) { %>
-                <button id="loadMoreBtn" class="btn btn-primary mt-3">Load More</button>
+                <button id="loadMoreBtn" class="btn btn-link btn-sm mb-3">Load More</button>
             <% } %>
         </div>
     </div>
@@ -153,6 +153,7 @@
     const campground = <%- JSON.stringify(campground) %>;
     const campgroundId = '<%- campground.id %>';
     const currentUserId = '<%- currentUser ? currentUser.id : '' %>';
+    const campgroundCount = '<%- campground.reviews.length %>';
 </script>
 <script src="/scripts/showPageMap.js"></script>
 <script src="/scripts/reviewLoad.js"></script>
