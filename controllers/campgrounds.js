@@ -138,3 +138,41 @@ module.exports.loadReview = async(req, res, next) => {
     const nextReviews = campground.reviews.slice(startIdx, endIdx);
     res.json({ nextReviews });
 }
+
+module.exports.search = async (req, res, next) => {
+
+    if (req.query.q){
+        const searchQuery = new RegExp(`${escapeRegex(req.query.q)}`, 'i');
+        let query = {
+            $or: [
+                { title: searchQuery},
+                { location: searchQuery}
+            ]
+        };
+
+        const page = parseInt(req.query.page) || 1;
+        const skip = (page - 1) * ITEMS_PER_PAGE;
+
+        const campgrounds = await Campground.find(query)
+            .skip(skip)
+            .limit(ITEMS_PER_PAGE);
+
+        const totalCampgrounds = await Campground.countDocuments(query);
+        const totalPages = Math.ceil(totalCampgrounds / ITEMS_PER_PAGE);
+
+        res.render('campgrounds/search', {
+            campgrounds,
+            currentPage: `Search results`,
+            totalPages,
+            currentPageNumber: page,
+            searchQuery: req.query.q
+        });
+
+    }else {
+        res.redirect('/campgrounds');
+    }
+}
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
