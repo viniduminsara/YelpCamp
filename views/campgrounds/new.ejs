@@ -2,9 +2,11 @@
 
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-        <h1 class="text-center mb-4 mt-2">Create Your Campground</h1>
+<!--        <h1 class="text-center mb-4 mt-2">Add Your Campground</h1>-->
+        <div class="bs-callout bs-callout-info">
+            <p><strong>Note:</strong> Please provide your campground's location by city and the country.</p>
+        </div>
         <form action="/campgrounds" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
-
             <div class="mb-2">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" placeholder="Enter Title of the campground"
@@ -13,7 +15,7 @@
             </div>
             <div class="mb-2">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" placeholder="Town, Country"
+                <input type="text" class="form-control" id="location" placeholder="Enter Location of the campground"
                     name="campground[location]" required>
                 <div class="invalid-feedback">Please enter the location of Campground.</div>
             </div>
@@ -43,4 +45,3 @@
         <img src="https://res.cloudinary.com/di22m4v3n/image/upload/v1704455738/YelpCamp/Camping-amico_qxxil9.png" alt="image" style="width: 500px;">
     </div>
 </div>
-    

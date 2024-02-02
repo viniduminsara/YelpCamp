@@ -25,7 +25,7 @@ module.exports.index = async(req, res, next) => {
 
     res.render('campgrounds/index', {
         campgrounds,
-        currentPage: 'Campgrounds',
+        currentPage: 'YelpCamp | Campgrounds',
         totalPages,
         currentPageNumber: page
     });
