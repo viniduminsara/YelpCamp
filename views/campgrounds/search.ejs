@@ -1,10 +1,10 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="row my-3">
-    <div class="col-8">
+    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
         <h3 class="m-4">Results for <span class="text-muted">"<%= searchQuery %>"</span></h3>
     </div>
-    <div class="col-4 d-flex justify-content-end">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-12 d-flex justify-content-center">
         <form action="/campgrounds/search" class="d-flex justify-content-end align-items-center">
             <div class="form-group has-search mx-2">
                 <span class="fa fa-search form-control-feedback"></span>
@@ -38,7 +38,7 @@
 <% }else {%>
     <div class="d-flex align-items-center justify-content-center notfound">
         <div class="text-center">
-            <img src="https://res.cloudinary.com/di22m4v3n/image/upload/v1706876193/notfound_jfymzi.png" alt="not-found">
+            <img src="/images/notfound.png" alt="not-found">
             <h4>No results found</h4>
             <p>There weren't any saved campground's name or location matching your search.</p>
         </div>

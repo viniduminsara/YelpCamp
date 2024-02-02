@@ -1,6 +1,6 @@
 body{
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(https://res.cloudinary.com/di22m4v3n/image/upload/v1704460255/YelpCamp/signup_juyp3w.jpg);
+    url(../images/signup_bg.jpg);
     background-size: cover;
     background-position: center;
 }
