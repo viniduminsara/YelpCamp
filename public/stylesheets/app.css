@@ -79,3 +79,15 @@
     border-color: #d0e3f0;
 }
 
+.notfound img{
+    width: 300px;
+}
+
+.notfound h4{
+    color: #868DB6;
+}
+
+.notfound p{
+    color: #868DB6;
+}
+
