@@ -19,7 +19,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoDBStore = require('connect-mongo');
 const urls = require('./public/scripts/CSPUrls');
+// const dbUrl = process.env.DB_URL; //production database
+const dbUrl = 'mongodb://localhost:27017/yelp_camp'; // development database
 
 //configurations
 app.engine('ejs', ejsMate);
@@ -32,6 +35,14 @@ app.use(flash());
 app.use(mongoSanitize());
 app.use(helmet());
 
+const store = new MongoDBStore({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thissecretshouldbebetter'
+    }
+})
+
 const sessionConfig = {
     name: 'YelpCampSession',
     secret: 'thissecretshouldbebetter',
@@ -42,7 +53,8 @@ const sessionConfig = {
         // secure: true,
         expires: Date.now() + ( 1000 * 60 * 60 * 24 * 7 ),
         maxAge: ( 1000 * 60 * 60 * 24 * 7 )
-    }
+    },
+    store
 }
 app.use(session(sessionConfig));
 
@@ -79,7 +91,8 @@ const port = 3000;
 const db = mongoose.connection;
 
 //connect with database
-mongoose.connect('mongodb://localhost:27017/yelp_camp');
+//'mongodb://localhost:27017/yelp_camp'
+mongoose.connect(dbUrl);
 db.on('error', console.error.bind(console, 'Database connection error :('));
 db.once('open', () => console.log('Database connected :)'));
 
