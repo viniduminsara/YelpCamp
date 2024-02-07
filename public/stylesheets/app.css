@@ -91,3 +91,35 @@
     color: #868DB6;
 }
 
+.navbar-toggler{
+    border: none;
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
+
+@media all and (max-width: 420px){
+    .card{
+        width: 370px;
+    }
+}
+
+@media all and (max-width: 390px){
+    .card{
+        width: 350px;
+    }
+}
+
+@media all and (max-width: 370px){
+    .card{
+        width: 320px;
+    }
+}
+
+@media all and (max-width: 340px){
+    .card{
+        width: 300px;
+    }
+}
+
