@@ -87,7 +87,7 @@ app.use(
     })
 );
 
-const port = process.env.PORT || 3000;
+const port = 80;
 const db = mongoose.connection;
 
 //connect with database
@@ -97,7 +97,7 @@ db.on('error', console.error.bind(console, 'Database connection error :('));
 db.once('open', () => console.log('Database connected :)'));
 
 app.listen(port, () => {
-    console.log(`Server up at port ${port}`);
+    console.log('Server up at port 80');
 });
 
 app.use((req, res, next) => {
