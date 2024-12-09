@@ -49,26 +49,41 @@ module.exports.create = async(req, res, next) => {
     res.redirect(`/campgrounds/${new_camp.id}`);
 }
 
-module.exports.show = async(req, res, next) => {
-    const {id} = req.params;
+module.exports.show = async (req, res, next) => {
+    const { id } = req.params;
+
     const campground = await Campground.findById(id).populate({
         path: 'reviews',
         populate: {
             path: 'author'
         }
     }).populate('author');
-    if(!campground){
+
+    if (!campground) {
         req.flash('error', 'Cannot Find The Campground');
         return res.redirect('/campgrounds');
     }
 
-    const displayedReviews = campground.reviews.slice(0, 2);
+    const starCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+    campground.reviews.forEach(review => {
+        if (review.rating >= 1 && review.rating <= 5) {
+            starCounts[review.rating] = (starCounts[review.rating] || 0) + 1;
+        }
+    });
 
     const total = campground.reviews.reduce((sum, review) => sum + review.rating, 0);
     const reviewsCount = campground.reviews.length;
     const average = reviewsCount ? (total / reviewsCount).toFixed(1) : 0.0;
 
-    const ratingStats = { total: total, reviewsCount:reviewsCount, average: average }
+    const ratingStats = {
+        total: total,
+        reviewsCount: reviewsCount,
+        average: average,
+        stars: starCounts
+    };
+
+    const displayedReviews = campground.reviews.slice(0, 2);
 
     res.render('campgrounds/show', {
         campground,
@@ -76,7 +91,7 @@ module.exports.show = async(req, res, next) => {
         displayedReviews,
         currentPage: campground.title
     });
-}
+};
 
 module.exports.editForm = async(req, res, next) => {
     const {id} = req.params;
