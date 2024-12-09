@@ -103,6 +103,12 @@
     .card{
         width: 370px;
     }
+    .footer {
+        flex-direction: column;
+    }
+    .auth-image {
+        width: 200px;
+    }
 }
 
 @media all and (max-width: 390px){
@@ -122,4 +128,17 @@
         width: 300px;
     }
 }
+
+#search-results {
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
