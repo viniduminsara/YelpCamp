@@ -87,7 +87,7 @@ app.use(
     })
 );
 
-const port = 80;
+const port = process.env.PORT || 3000;
 const db = mongoose.connection;
 
 //connect with database
