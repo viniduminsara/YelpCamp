@@ -16,6 +16,7 @@
                 <label for="location" class="form-label">Location</label>
                 <input type="text" class="form-control" id="location" placeholder="Enter Location of the campground"
                     name="campground[location]" required>
+                <ul id="search-results" class="list-group position-absolute z-3"></ul>
                 <div class="invalid-feedback">Please enter the location of Campground.</div>
             </div>
             <div class="input-group mb-2">
@@ -28,8 +29,9 @@
                 </div>
             </div>
             <div class="mb-2">
-                <label for="image" class="form-label">Image URL</label>
+                <label for="image" class="form-label">Images</label>
                 <input type="file" class="form-control" name="image" id="image" multiple required>
+                <div id="preview-container" class="row mt-2"></div>
             </div>
             <div class="mb-2">
                 <label for="desc" class="form-label">Description</label>
@@ -41,6 +43,13 @@
         </form>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 d-flex justify-content-center align-items-center">
-        <img src="/images/create_bg.png" alt="image" style="width: 500px;">
+<!--        <img src="/images/create_bg.png" alt="image" style="width: 500px;">-->
+        <div id="map" class="w-100 h-75"></div>
     </div>
 </div>
+
+<script>
+    const mapbox_token = '<%- process.env.MAPBOX_TOKEN %>';
+</script>
+<script src="/scripts/places-auto-complete.js"></script>
+

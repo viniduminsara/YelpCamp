@@ -62,3 +62,19 @@ button:hover{
     opacity: 0.7;
 }
 
+.auth-image {
+    width: 500px;
+}
+
+@media all and (max-width: 991px){
+    .auth-image {
+        width: 300px;
+    }
+}
+
+@media all and (max-width: 425px){
+    .auth-image {
+        width: 200px;
+    }
+}
+
