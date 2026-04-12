@@ -97,7 +97,7 @@ db.on('error', console.error.bind(console, 'Database connection error :('));
 db.once('open', () => console.log('Database connected :)'));
 
 app.listen(port, () => {
-    console.log('Server up at port 80');
+    console.log(`Server up at port ${port}`);
 });
 
 app.use((req, res, next) => {
