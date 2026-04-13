@@ -8,5 +8,3 @@ npm-debug.log
 .idea
 coverage
 logs
-public/images/*
-*.log
